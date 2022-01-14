@@ -1,26 +1,28 @@
-using Nex.Simulator.Domain.Interfaces;
-using Nex.Simulator.Domain.Models;
+using Osrs.Simulator.Domain.Interfaces;
+using Osrs.Simulator.Domain.Models;
+using Osrs.Simulator.Domain.Models.Bosses;
+using Osrs.Simulator.Domain.Models.Uniques;
 
-namespace Nex.Simulator.Domain.Services;
+namespace Osrs.Simulator.Domain.Services;
 
-public class NexUniqueSimulator : INexUniqueSimulator
+public class UniqueCollectionSimulator<T> : IUniqueCollectionSimulator<T> where T : Boss
 {
-    private readonly INexKillSimulator _nexKiller;
+    private readonly IKillSimulator<T> _killer;
 
-    public NexUniqueSimulator(INexKillSimulator nexKiller)
+    public UniqueCollectionSimulator(IKillSimulator<T> killer)
     {
-        _nexKiller = nexKiller;
+        _killer = killer;
     }
 
-    public SimulationResult GetKillsForUniques(int teamSize, IEnumerable<NexUnique> desiredUniques)
+    public SimulationResult<T> GetKillsForUniques(int teamSize, IEnumerable<BossUnique<T>> desiredUniques)
     {
         var kills = 0;
-        var obtainedUniques = new List<NexUnique>();
+        var obtainedUniques = new List<BossUnique<T>>();
         var groupedDesiredUniques = desiredUniques.GroupBy(x => x.Name).ToList();
         while (true)
         {
             kills++;
-            var unique = _nexKiller.SimulateNexDrop(teamSize);
+            var unique = _killer.SimulateDrop(teamSize);
             if (unique is null)
             {
                 continue;
@@ -29,15 +31,15 @@ public class NexUniqueSimulator : INexUniqueSimulator
             obtainedUniques.Add(unique);
             if (DoesUniqueListSuperSetDesiredUniques(obtainedUniques, groupedDesiredUniques))
             {
-                return new SimulationResult(kills, obtainedUniques);
+                return new SimulationResult<T>(kills, obtainedUniques);
             }
         }
 
     }
 
     private static bool DoesUniqueListSuperSetDesiredUniques(
-        IEnumerable<NexUnique> obtainedUniques,
-        IEnumerable<IGrouping<string, NexUnique>> desiredUniques
+        IEnumerable<BossUnique<T>> obtainedUniques,
+        IEnumerable<IGrouping<string, BossUnique<T>>> desiredUniques
     )
     {
         var obtainedUniqueCounts = obtainedUniques.GroupBy(x => x.Name);

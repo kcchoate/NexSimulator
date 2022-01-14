@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nex.Simulator.Domain", "Nex.Simulator.Domain\Nex.Simulator.Domain.csproj", "{FBDDA5D8-5016-4E40-9C30-7E8A651791B2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Osrs.Simulator.Domain", "Osrs.Simulator.Domain\Osrs.Simulator.Domain.csproj", "{FBDDA5D8-5016-4E40-9C30-7E8A651791B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nex.Simulator.Console", "Nex.Simulator.Console\Nex.Simulator.Console.csproj", "{B7DA6B22-38E1-4615-90D6-5A8BC20BC038}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Osrs.Simulator.Console", "Osrs.Simulator.Console\Osrs.Simulator.Console.csproj", "{B7DA6B22-38E1-4615-90D6-5A8BC20BC038}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

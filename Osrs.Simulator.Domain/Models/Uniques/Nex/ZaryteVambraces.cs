@@ -1,4 +1,4 @@
-namespace Nex.Simulator.Domain.Models;
+namespace Osrs.Simulator.Domain.Models.Uniques.Nex;
 
 public record ZaryteVambraces : NexUnique
 {

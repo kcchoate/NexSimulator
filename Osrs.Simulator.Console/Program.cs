@@ -1,19 +1,20 @@
-﻿using System.Collections.Concurrent;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Nex.Simulator.Domain;
-using Nex.Simulator.Domain.Interfaces;
-using Nex.Simulator.Domain.Models;
-using Nex.Simulator.Domain.Services;
+using Osrs.Simulator.Domain.Interfaces;
+using Osrs.Simulator.Domain.Models;
+using Osrs.Simulator.Domain.Models.Bosses;
+using Osrs.Simulator.Domain.Models.Uniques;
+using Osrs.Simulator.Domain.Models.Uniques.Nex;
+using Osrs.Simulator.Domain.Services;
 
 using var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
         services.AddSingleton<IRandomNumberGenerator, RandomNumberGenerator>()
-            .AddTransient<INexKillSimulator, NexKillSimulator>()
-            .AddTransient<INexUniqueSimulator, NexUniqueSimulator>())
+            .AddTransient<IKillSimulator<Nex>, NexKillSimulator>()
+            .AddTransient(typeof(IUniqueCollectionSimulator<>), typeof(UniqueCollectionSimulator<>)))
     .Build();
 
-var killsRequired = GetStatsForUniques(6, 1_000_000, host.Services, new NexUnique[]
+var killsRequired = GetStatsForUniques(6, 100_000, host.Services, new NexUnique[]
 {
     new ZaryteVambraces(),
     new TorvaFullHelmet(),
@@ -24,23 +25,23 @@ var killsRequired = GetStatsForUniques(6, 1_000_000, host.Services, new NexUniqu
 
 await host.RunAsync();
 
-static IEnumerable<int> GetStatsForUniques(
+static IEnumerable<int> GetStatsForUniques<T>(
     int teamSize,
     int iterations,
     IServiceProvider services,
-    IEnumerable<NexUnique> desiredUniques)
+    IEnumerable<BossUnique<T>> desiredUniques) where T : Boss
 {
     using var serviceScope = services.CreateScope();
     var provider = serviceScope.ServiceProvider;
-    var nexSimulator = provider.GetRequiredService<INexUniqueSimulator>();
+    var bossUniqueSimulator = provider.GetRequiredService<IUniqueCollectionSimulator<T>>();
 
     desiredUniques = desiredUniques.ToList();
 
-    var results = new List<SimulationResult>();
+    var results = new List<SimulationResult<T>>();
 
     for (var i = 0; i < iterations; i++)
     {
-        results.Add(nexSimulator.GetKillsForUniques(teamSize, desiredUniques));
+        results.Add(bossUniqueSimulator.GetKillsForUniques(teamSize, desiredUniques));
     }
 
     PrintBasicStatistics();
