@@ -51,7 +51,7 @@ static IEnumerable<int> GetStatsForUniques(
     var maxKills = results.MaxBy(x => x.kills);
     var maxKillUniques = maxKills.obtainedUniques.GroupBy(x => x.Name);
     Console.WriteLine($"Maximum Kills Required: {maxKills.kills}");
-    Console.WriteLine($"The guy OR GAL who got {maxKills.kills} received:");
+    Console.WriteLine($"The person who got {maxKills.kills} received:");
     foreach (var unique in maxKillUniques)
     {
         Console.WriteLine($"\t{unique.Count()} {unique.First().Name}");
