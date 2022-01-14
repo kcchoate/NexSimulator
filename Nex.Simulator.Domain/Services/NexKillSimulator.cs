@@ -33,7 +33,7 @@ public class NexKillSimulator : INexKillSimulator
             <= 7 => new TorvaPlateBody(),
             <= 9 => new TorvaPlateLegs(),
             <= 12 => new ZaryteVambraces(),
-            _ => throw new SwitchExpressionException($"Rolled invalid value {uniqueRoll}")
+            _ => throw new SwitchExpressionException(uniqueRoll)
         };
     }
 }
