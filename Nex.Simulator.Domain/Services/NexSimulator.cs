@@ -20,11 +20,12 @@ public class NexUniqueSimulator : INexUniqueSimulator
         {
             kills++;
             var unique = _nexKiller.SimulateNexDrop(teamSize);
-            if (unique != null)
+            if (unique is null)
             {
-                obtainedUniques.Add(unique);
+                continue;
             }
 
+            obtainedUniques.Add(unique);
             if (DoesUniqueListSuperSetDesiredUniques(obtainedUniques, groupedDesiredUniques))
             {
                 return (kills, obtainedUniques);

@@ -49,7 +49,7 @@ static IEnumerable<int> GetStatsForUniques(
     var maxKills = bag.MaxBy(x => x.kills);
     var maxKillUniques = maxKills.obtainedUniques.GroupBy(x => x.Name);
     Console.WriteLine($"Maximum Kills Required: {maxKills.kills}");
-    Console.WriteLine($"The guy who got {maxKills} received:");
+    Console.WriteLine($"The guy who got {maxKills.kills} received:");
     foreach (var unique in maxKillUniques)
     {
         Console.WriteLine($"\t{unique.Count()} {unique.First().Name}");
