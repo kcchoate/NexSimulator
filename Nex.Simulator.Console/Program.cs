@@ -45,7 +45,7 @@ static IEnumerable<int> GetStatsForUniques(
 
     Console.WriteLine($"Team Size: {teamSize}");
     Console.WriteLine($"Total Iterations: {iterations}");
-    Console.WriteLine($"Desired Uniques: {string.Join(",", desiredUniques)}");
+    Console.WriteLine($"Desired Uniques: {string.Join(",", desiredUniques.Select(x => x.Name))}");
     Console.WriteLine($"Average Kills Required: {results.Average(x => x.kills)}");
     Console.WriteLine($"Minimum Kills Required: {results.Min(x => x.kills)}");
     var maxKills = results.MaxBy(x => x.kills);
