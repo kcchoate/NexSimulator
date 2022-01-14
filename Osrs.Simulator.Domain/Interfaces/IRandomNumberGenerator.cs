@@ -1,4 +1,4 @@
-namespace Nex.Simulator.Domain.Interfaces;
+namespace Osrs.Simulator.Domain.Interfaces;
 
 public interface IRandomNumberGenerator
 {

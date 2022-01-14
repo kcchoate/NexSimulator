@@ -1,6 +1,6 @@
-using Nex.Simulator.Domain.Interfaces;
+using Osrs.Simulator.Domain.Interfaces;
 
-namespace Nex.Simulator.Domain.Services;
+namespace Osrs.Simulator.Domain.Services;
 
 public class RandomNumberGenerator : IRandomNumberGenerator
 {

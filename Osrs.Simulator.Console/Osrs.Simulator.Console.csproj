@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Nex.Simulator.Domain\Nex.Simulator.Domain.csproj" />
+      <ProjectReference Include="..\Osrs.Simulator.Domain\Osrs.Simulator.Domain.csproj" />
     </ItemGroup>
 
 </Project>
