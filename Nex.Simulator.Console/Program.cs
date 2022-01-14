@@ -74,8 +74,8 @@ static IEnumerable<int> GetStatsForUniques(
         foreach (var percentile in percentiles)
         {
             var kcInPercentile = orderedKcs.Skip(Convert.ToInt32(iterations * percentile)).First().Kills;
-            Console.WriteLine($"{percentile * 100}% of people received their uniques within {kcInPercentile} KC");
+            Console.WriteLine($"{Convert.ToInt32(percentile * 100)}% of people received their uniques within {kcInPercentile} KC");
         }
-        Console.WriteLine($"100% of people received their uniques within {results.Count} KC");
+        Console.WriteLine($"100% of people received their uniques within {orderedKcs.Last().Kills} KC");
     }
 }
