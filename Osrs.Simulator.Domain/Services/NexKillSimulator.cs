@@ -12,8 +12,13 @@ public class NexKillSimulator : KillSimulator<Nex>
     {
     }
 
-    protected override int UniqueDropRateDenominator => 53;
-    protected override BossUnique<Nex> GetRandomUnique()
+    private const int UniqueDropRateDenominator = 53;
+    public override BossUnique<Nex>? SimulateDrop(int teamSize)
+    {
+        var individualsDropRateFraction = UniqueDropRateDenominator * teamSize;
+        return Rng.GetRandomInt(1, individualsDropRateFraction) == 1 ? GetRandomUnique() : null;
+    }
+    private BossUnique<Nex> GetRandomUnique()
     {
         {
             var uniqueRoll = Rng.GetRandomInt(1, 12);

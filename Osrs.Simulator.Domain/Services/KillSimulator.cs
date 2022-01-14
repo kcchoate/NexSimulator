@@ -6,8 +6,6 @@ namespace Osrs.Simulator.Domain.Services;
 
 public abstract class KillSimulator<T> : IKillSimulator<T> where T : Boss
 {
-    protected abstract int UniqueDropRateDenominator { get; }
-
     protected readonly IRandomNumberGenerator Rng;
 
     protected KillSimulator(IRandomNumberGenerator rng)
@@ -15,11 +13,5 @@ public abstract class KillSimulator<T> : IKillSimulator<T> where T : Boss
         Rng = rng;
     }
 
-    public BossUnique<T>? SimulateDrop(int teamSize)
-    {
-        var individualsDropRateFraction = UniqueDropRateDenominator * teamSize;
-        return Rng.GetRandomInt(1, individualsDropRateFraction) == 1 ? GetRandomUnique() : null;
-    }
-
-    protected abstract BossUnique<T> GetRandomUnique();
+    public abstract BossUnique<T>? SimulateDrop(int teamSize);
 }
