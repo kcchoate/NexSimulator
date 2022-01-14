@@ -1,4 +1,5 @@
 using Nex.Simulator.Domain.Interfaces;
+using Nex.Simulator.Domain.Models;
 
 namespace Nex.Simulator.Domain.Services;
 
@@ -11,7 +12,7 @@ public class NexUniqueSimulator : INexUniqueSimulator
         _nexKiller = nexKiller;
     }
 
-    public (int requiredKills, IEnumerable<NexUnique> uniquesObtained) GetKillsForUniques(int teamSize, IEnumerable<NexUnique> desiredUniques)
+    public SimulationResult GetKillsForUniques(int teamSize, IEnumerable<NexUnique> desiredUniques)
     {
         var kills = 0;
         var obtainedUniques = new List<NexUnique>();
@@ -28,7 +29,7 @@ public class NexUniqueSimulator : INexUniqueSimulator
             obtainedUniques.Add(unique);
             if (DoesUniqueListSuperSetDesiredUniques(obtainedUniques, groupedDesiredUniques))
             {
-                return (kills, obtainedUniques);
+                return new SimulationResult(kills, obtainedUniques);
             }
         }
 
