@@ -18,10 +18,9 @@ var killsRequired = GetStatsForUniques(6, 1_000_000, host.Services, new NexUniqu
     new ZaryteVambraces(),
     new TorvaFullHelmet(),
     new TorvaPlateBody(),
-    new TorvaPlateLegs()
+    new TorvaPlateLegs(),
+    new NihilHorn(),
 });
-
-await File.WriteAllLinesAsync("killsRequired.csv", killsRequired.Select(x => x.ToString()));
 
 await host.RunAsync();
 
