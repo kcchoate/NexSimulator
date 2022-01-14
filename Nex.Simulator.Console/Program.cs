@@ -13,7 +13,7 @@ using var host = Host.CreateDefaultBuilder(args)
             .AddTransient<INexUniqueSimulator, NexUniqueSimulator>())
     .Build();
 
-var killsRequired = GetStatsForUniques(6, 100_000, host.Services, new NexUnique[]
+var killsRequired = GetStatsForUniques(6, 1_000_000, host.Services, new NexUnique[]
 {
     new ZaryteVambraces(),
     new TorvaFullHelmet(),
