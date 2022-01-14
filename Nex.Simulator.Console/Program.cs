@@ -35,18 +35,21 @@ static IEnumerable<int> GetStatsForUniques(
     var provider = serviceScope.ServiceProvider;
     var nexSimulator = provider.GetRequiredService<INexUniqueSimulator>();
 
-    var bag = new ConcurrentBag<(int kills, IEnumerable<NexUnique> obtainedUniques)>();
-    Parallel.ForEach(Enumerable.Range(0, iterations), (_) =>
+    desiredUniques = desiredUniques.ToList();
+
+    var results = new List<(int kills, IEnumerable<NexUnique> obtainedUniques)>();
+
+    for (var i = 0; i < iterations; i++)
     {
-        bag.Add(nexSimulator.GetKillsForUniques(teamSize, desiredUniques));
-    });
+        results.Add(nexSimulator.GetKillsForUniques(teamSize, desiredUniques));
+    }
 
     Console.WriteLine($"Team Size: {teamSize}");
     Console.WriteLine($"Total Iterations: {iterations}");
     Console.WriteLine($"Desired Uniques: {string.Join(",", desiredUniques)}");
-    Console.WriteLine($"Average Kills Required: {bag.Average(x => x.kills)}");
-    Console.WriteLine($"Minimum Kills Required: {bag.Min(x => x.kills)}");
-    var maxKills = bag.MaxBy(x => x.kills);
+    Console.WriteLine($"Average Kills Required: {results.Average(x => x.kills)}");
+    Console.WriteLine($"Minimum Kills Required: {results.Min(x => x.kills)}");
+    var maxKills = results.MaxBy(x => x.kills);
     var maxKillUniques = maxKills.obtainedUniques.GroupBy(x => x.Name);
     Console.WriteLine($"Maximum Kills Required: {maxKills.kills}");
     Console.WriteLine($"The guy who got {maxKills.kills} received:");
@@ -54,7 +57,7 @@ static IEnumerable<int> GetStatsForUniques(
     {
         Console.WriteLine($"\t{unique.Count()} {unique.First().Name}");
     }
-    Console.WriteLine($"Most Common # Kills Required: {bag.GroupBy(x => x.kills).MaxBy(x => x.Count())!.Key}");
+    Console.WriteLine($"Most Common # Kills Required: {results.GroupBy(x => x.kills).MaxBy(x => x.Count())!.Key}");
 
-    return bag.Select(x => x.kills);
+    return results.Select(x => x.kills);
 }
