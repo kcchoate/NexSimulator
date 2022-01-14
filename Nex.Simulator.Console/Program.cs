@@ -36,7 +36,7 @@ static IEnumerable<int> GetStatsForUniques(
 
     desiredUniques = desiredUniques.ToList();
 
-    var results = new List<(int kills, IEnumerable<NexUnique> obtainedUniques)>();
+    var results = new List<SimulationResult>();
 
     for (var i = 0; i < iterations; i++)
     {
@@ -46,17 +46,17 @@ static IEnumerable<int> GetStatsForUniques(
     Console.WriteLine($"Team Size: {teamSize}");
     Console.WriteLine($"Total Iterations: {iterations}");
     Console.WriteLine($"Desired Uniques: {string.Join(",", desiredUniques.Select(x => x.Name))}");
-    Console.WriteLine($"Average Kills Required: {results.Average(x => x.kills)}");
-    Console.WriteLine($"Minimum Kills Required: {results.Min(x => x.kills)}");
-    var maxKills = results.MaxBy(x => x.kills);
-    var maxKillUniques = maxKills.obtainedUniques.GroupBy(x => x.Name);
-    Console.WriteLine($"Maximum Kills Required: {maxKills.kills}");
-    Console.WriteLine($"The guy who got {maxKills.kills} received:");
+    Console.WriteLine($"Average Kills Required: {results.Average(x => x.Kills)}");
+    Console.WriteLine($"Minimum Kills Required: {results.Min(x => x.Kills)}");
+    var maxKills = results.MaxBy(x => x.Kills);
+    var maxKillUniques = maxKills!.Uniques.GroupBy(x => x.Name);
+    Console.WriteLine($"Maximum Kills Required: {maxKills.Kills}");
+    Console.WriteLine($"The guy who got {maxKills.Kills} received:");
     foreach (var unique in maxKillUniques)
     {
         Console.WriteLine($"\t{unique.Count()} {unique.First().Name}");
     }
-    Console.WriteLine($"Most Common # Kills Required: {results.GroupBy(x => x.kills).MaxBy(x => x.Count())!.Key}");
+    Console.WriteLine($"Most Common # Kills Required: {results.GroupBy(x => x.Kills).MaxBy(x => x.Count())!.Key}");
 
-    return results.Select(x => x.kills);
+    return results.Select(x => x.Kills);
 }
