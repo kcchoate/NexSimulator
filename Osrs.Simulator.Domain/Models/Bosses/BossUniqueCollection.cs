@@ -8,8 +8,8 @@ public class BossUniqueCollection<T> where T : Boss<T>
     /// This collection holds the "scaled" values for uniques. This means that if we have 3 uniques with drop rates 1/8, 1/16, and 13/16,
     /// our dictionary will contain { {2, UniqueA}, {3, UniqueB}, {16, UniqueC} }. When we retrieve a random unique, we scale the random
     /// value by the least common denominator (in this case 16), then retrieve the value from the dictionary for which the key is the
-    /// lowest key which is greater than the scaled value, e.g. if we roll a .1, we scale to 1.6, and retrieve UniqueA. If we roll a .5,
-    /// we scale to 8, and retrieve UniqueC.
+    /// lowest key which is greater than or equal to the scaled value, e.g. if we roll a .1, we scale to 1.6, and retrieve UniqueA. 
+    /// If we roll a .5, we scale to 8, and retrieve UniqueC.
     /// </summary>
     private Dictionary<int, IBossUnique<T>> _bossUniques { get; }
     private int _leastCommonDenominator { get; }
@@ -27,7 +27,7 @@ public class BossUniqueCollection<T> where T : Boss<T>
         foreach (var (dropValue, currentBossUnique) in _bossUniques.OrderBy(x => x.Key))
         {
             bossUnique = currentBossUnique;
-            if (lootRollValue < dropValue)
+            if (lootRollValue <= dropValue)
             {
                 return bossUnique;
             }
