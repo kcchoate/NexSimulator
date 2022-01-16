@@ -15,10 +15,7 @@ public record Nex : Boss<Nex>
         new AncientHilt(1, 12),
     };
 
-    public Nex() : base(_nexUniques)
-    {
-
-    }
+    protected override BossUniqueCollection<Nex> BossUniqueCollection { get; } = new(_nexUniques);
 
     public override string Name => "Nex";
 
