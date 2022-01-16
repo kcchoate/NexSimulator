@@ -55,14 +55,14 @@ public class BossUniqueCollection<T> where T : Boss<T>
         });
     }
 
-    private static int GetLeastCommonMultiple(IEnumerable<int> allBossUniques)
+    private static int GetLeastCommonMultiple(IEnumerable<int> values)
     {
-        if (allBossUniques.Count() == 1)
+        if (values.Count() == 1)
         {
-            return allBossUniques.First();
+            return values.First();
         }
         // we do this weird skip 1 and start with the first so that we don't start our seed at 0, since that would screw up the LCM calculation.
-        return allBossUniques.Skip(1).Aggregate(allBossUniques.First(), (lcm, curr) => GetLeastCommonMultiple(lcm, curr));
+        return values.Skip(1).Aggregate(values.First(), (lcm, curr) => GetLeastCommonMultiple(lcm, curr));
     }
 
     private static int GetLeastCommonMultiple(int a, int b)
@@ -76,9 +76,13 @@ public class BossUniqueCollection<T> where T : Boss<T>
         while (a != 0 && b != 0)
         {
             if (a > b)
+            {
                 a %= b;
+            }
             else
+            {
                 b %= a;
+            }
         }
 
         return a | b;
