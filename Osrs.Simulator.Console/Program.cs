@@ -3,18 +3,17 @@ using Microsoft.Extensions.Hosting;
 using Osrs.Simulator.Domain.Interfaces;
 using Osrs.Simulator.Domain.Models;
 using Osrs.Simulator.Domain.Models.Bosses;
-using Osrs.Simulator.Domain.Models.Uniques;
 using Osrs.Simulator.Domain.Models.Uniques.Nex;
 using Osrs.Simulator.Domain.Services;
 
 using var host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices((_, services) =>
-        services.AddSingleton<IRandomNumberGenerator, RandomNumberGenerator>()
-            .AddTransient<IKillSimulator<Nex>, NexKillSimulator>()
-            .AddTransient(typeof(IUniqueCollectionSimulator<>), typeof(UniqueCollectionSimulator<>)))
+    .ConfigureServices((_, services) => services
+        .AddSingleton<IRandomNumberGenerator, RandomNumberGenerator>()
+        .AddSingleton(typeof(IKillSimulator<>), typeof(KillSimulator<>))
+        .AddSingleton(typeof(IUniqueCollectionSimulator<>), typeof(UniqueCollectionSimulator<>)))
     .Build();
 
-var killsRequired = GetStatsForUniques(6, 100_000, host.Services, new NexUnique[]
+var killsRequired = GetStatsForUniques(6, 100_000, host.Services, new IBossUnique<Nex>[]
 {
     new ZaryteVambraces(),
     new TorvaFullHelmet(),
@@ -29,7 +28,7 @@ static IEnumerable<int> GetStatsForUniques<T>(
     int teamSize,
     int iterations,
     IServiceProvider services,
-    IEnumerable<BossUnique<T>> desiredUniques) where T : Boss
+    IEnumerable<IBossUnique<T>> desiredUniques) where T : Boss<T>
 {
     using var serviceScope = services.CreateScope();
     var provider = serviceScope.ServiceProvider;

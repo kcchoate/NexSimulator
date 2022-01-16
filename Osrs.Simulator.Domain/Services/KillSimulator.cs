@@ -1,17 +1,23 @@
 ﻿using Osrs.Simulator.Domain.Interfaces;
 using Osrs.Simulator.Domain.Models.Bosses;
-using Osrs.Simulator.Domain.Models.Uniques;
 
 namespace Osrs.Simulator.Domain.Services;
 
-public abstract class KillSimulator<T> : IKillSimulator<T> where T : Boss
+public class KillSimulator<T> : IKillSimulator<T> where T : Boss<T>, new()
 {
     protected readonly IRandomNumberGenerator Rng;
+    static readonly Boss<T> BossInstance = new T();
 
-    protected KillSimulator(IRandomNumberGenerator rng)
+    public KillSimulator(IRandomNumberGenerator rng)
     {
         Rng = rng;
     }
 
-    public abstract BossUnique<T>? SimulateDrop(int teamSize);
+    public virtual IBossUnique<T>? SimulateDrop(int teamSize)
+    {
+        var individualsDropRateFraction = BossInstance.UniqueDropRateDenominator * teamSize;
+        return Rng.GetRandomInt(1, individualsDropRateFraction) == 1 ? GetRandomUnique() : null;
+    }
+
+    protected virtual IBossUnique<T> GetRandomUnique() => BossInstance.GetBossUnique(Rng.GetRandomLootRoll());
 }

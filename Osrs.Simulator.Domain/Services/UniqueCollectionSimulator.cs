@@ -5,7 +5,7 @@ using Osrs.Simulator.Domain.Models.Uniques;
 
 namespace Osrs.Simulator.Domain.Services;
 
-public class UniqueCollectionSimulator<T> : IUniqueCollectionSimulator<T> where T : Boss
+public class UniqueCollectionSimulator<T> : IUniqueCollectionSimulator<T> where T : Boss<T>
 {
     private readonly IKillSimulator<T> _killer;
 
@@ -14,10 +14,10 @@ public class UniqueCollectionSimulator<T> : IUniqueCollectionSimulator<T> where 
         _killer = killer;
     }
 
-    public SimulationResult<T> GetKillsForUniques(int teamSize, IEnumerable<BossUnique<T>> desiredUniques)
+    public SimulationResult<T> GetKillsForUniques(int teamSize, IEnumerable<IBossUnique<T>> desiredUniques)
     {
         var kills = 0;
-        var obtainedUniques = new List<BossUnique<T>>();
+        var obtainedUniques = new List<IBossUnique<T>>();
         var groupedDesiredUniques = desiredUniques.GroupBy(x => x.Name).ToList();
         while (true)
         {
@@ -38,8 +38,8 @@ public class UniqueCollectionSimulator<T> : IUniqueCollectionSimulator<T> where 
     }
 
     private static bool DoesUniqueListSuperSetDesiredUniques(
-        IEnumerable<BossUnique<T>> obtainedUniques,
-        IEnumerable<IGrouping<string, BossUnique<T>>> desiredUniques
+        IEnumerable<IBossUnique<T>> obtainedUniques,
+        IEnumerable<IGrouping<string, IBossUnique<T>>> desiredUniques
     )
     {
         var obtainedUniqueCounts = obtainedUniques.GroupBy(x => x.Name);
