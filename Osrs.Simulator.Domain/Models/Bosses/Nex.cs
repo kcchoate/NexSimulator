@@ -7,12 +7,12 @@ public record Nex : Boss<Nex>
 {
     private static IEnumerable<IBossUnique<Nex>> _nexUniques { get; } = new IBossUnique<Nex>[]
     {
-        new ZaryteVambraces(),
-        new TorvaFullHelmet(),
-        new TorvaPlateBody(),
-        new TorvaPlateLegs(),
-        new NihilHorn(),
-        new AncientHilt(),
+        new ZaryteVambraces(3, 12),
+        new TorvaFullHelmet(2, 12),
+        new TorvaPlateBody(2, 12),
+        new TorvaPlateLegs(2, 12),
+        new NihilHorn(2, 12),
+        new AncientHilt(1, 12),
     };
 
     public Nex() : base(_nexUniques)
