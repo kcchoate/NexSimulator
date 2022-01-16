@@ -1,7 +1,10 @@
+using Osrs.Simulator.Domain.Interfaces;
+
 namespace Osrs.Simulator.Domain.Models.Uniques.Nex;
 
-public record ZaryteVambraces : NexUnique
+public record ZaryteVambraces : IBossUnique<Bosses.Nex>
 {
-    public override string Name => "Zaryte Vambraces";
-    public override decimal DropRate { get; } = new decimal(1) / new decimal(12);
+    public string Name => "Zaryte Vambraces";
+    public int DropRateNumerator => 3;
+    public int DropRateDenominator => 12;
 }

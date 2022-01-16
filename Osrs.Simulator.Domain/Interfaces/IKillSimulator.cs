@@ -1,10 +1,8 @@
-using Osrs.Simulator.Domain.Models;
 using Osrs.Simulator.Domain.Models.Bosses;
-using Osrs.Simulator.Domain.Models.Uniques;
 
 namespace Osrs.Simulator.Domain.Interfaces;
 
-public interface IKillSimulator<T> where T: Boss
+public interface IKillSimulator<T> where T: Boss<T>
 {
-    BossUnique<T>? SimulateDrop(int teamSize);
+    IBossUnique<T>? SimulateDrop(int teamSize);
 }

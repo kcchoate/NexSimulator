@@ -1,7 +1,10 @@
+using Osrs.Simulator.Domain.Interfaces;
+
 namespace Osrs.Simulator.Domain.Models.Uniques.Nex;
 
-public record NihilHorn : NexUnique
+public record NihilHorn : IBossUnique<Bosses.Nex>
 {
-    public override string Name => "Nihil Horn";
-    public override decimal DropRate { get; } = new decimal(2) / new decimal(12);
+    public string Name => "Nihil Horn";
+    public int DropRateNumerator => 2;
+    public int DropRateDenominator => 12;
 }
