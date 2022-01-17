@@ -4,5 +4,5 @@ namespace Osrs.Simulator.Domain.Models.Uniques.Nex;
 
 public record NihilHorn(int DropRateNumerator, int DropRateDenominator) : IBossUnique<Bosses.Nex>
 {
-    public string Name => "Nihil Horn";
+    public UniqueItemName<Bosses.Nex> Name { get; } = NexUniqueNames.NihilHorn;
 }

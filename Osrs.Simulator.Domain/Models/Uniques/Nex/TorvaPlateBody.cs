@@ -4,5 +4,5 @@ namespace Osrs.Simulator.Domain.Models.Uniques.Nex;
 
 public record TorvaPlateBody(int DropRateNumerator, int DropRateDenominator) : IBossUnique<Bosses.Nex>
 {
-    public string Name => "Torva Plate Body";
+    public UniqueItemName<Bosses.Nex> Name { get; } = NexUniqueNames.TorvaPlateBody;
 }

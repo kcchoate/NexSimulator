@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Osrs.Simulator.Domain.Interfaces;
 using Osrs.Simulator.Domain.Models;
 using Osrs.Simulator.Domain.Models.Bosses;
-using Osrs.Simulator.Domain.Models.Uniques.Nex;
+using Osrs.Simulator.Domain.Models.Uniques;
 using Osrs.Simulator.Domain.Services;
 
 using var host = Host.CreateDefaultBuilder(args)
@@ -13,13 +13,13 @@ using var host = Host.CreateDefaultBuilder(args)
         .AddSingleton(typeof(IUniqueCollectionSimulator<>), typeof(UniqueCollectionSimulator<>)))
     .Build();
 
-var killsRequired = GetStatsForUniques(6, 100_000, host.Services, new IBossUnique<Nex>[]
+var killsRequired = GetStatsForUniques(6, 100_000, host.Services, new[]
 {
-    new ZaryteVambraces(),
-    new TorvaFullHelmet(),
-    new TorvaPlateBody(),
-    new TorvaPlateLegs(),
-    new NihilHorn(),
+    Nex.UniqueNames.ZaryteVambraces,
+    Nex.UniqueNames.TorvaFullHelmet,
+    Nex.UniqueNames.TorvaPlateBody,
+    Nex.UniqueNames.TorvaPlateLegs,
+    Nex.UniqueNames.NihilHorn,
 });
 
 await host.RunAsync();
@@ -28,7 +28,7 @@ static IEnumerable<int> GetStatsForUniques<T>(
     int teamSize,
     int iterations,
     IServiceProvider services,
-    IEnumerable<IBossUnique<T>> desiredUniques) where T : Boss<T>
+    IEnumerable<UniqueItemName<T>> desiredUniques) where T : Boss<T>
 {
     using var serviceScope = services.CreateScope();
     var provider = serviceScope.ServiceProvider;
@@ -52,16 +52,16 @@ static IEnumerable<int> GetStatsForUniques<T>(
     {
         Console.WriteLine($"Team Size: {teamSize}");
         Console.WriteLine($"Total Iterations: {iterations}");
-        Console.WriteLine($"Desired Uniques: {string.Join(",", desiredUniques.Select(x => x.Name))}");
+        Console.WriteLine($"Desired Uniques: {string.Join(",", desiredUniques.Select(x => x.UniqueName))}");
         Console.WriteLine($"Average Kills Required: {results.Average(x => x.Kills)}");
         Console.WriteLine($"Minimum Kills Required: {results.Min(x => x.Kills)}");
         var maxKills = results.MaxBy(x => x.Kills);
-        var maxKillUniques = maxKills!.Uniques.GroupBy(x => x.Name);
+        var maxKillUniques = maxKills!.Uniques.GroupBy(x => x.UniqueName);
         Console.WriteLine($"Maximum Kills Required: {maxKills.Kills}");
         Console.WriteLine($"The person who got {maxKills.Kills} received:");
         foreach (var unique in maxKillUniques)
         {
-            Console.WriteLine($"\t{unique.Count()} {unique.First().Name}");
+            Console.WriteLine($"\t{unique.Count()} {unique.First().UniqueName}");
         }
 
         Console.WriteLine($"Most Common # Kills Required: {results.GroupBy(x => x.Kills).MaxBy(x => x.Count())!.Key}");

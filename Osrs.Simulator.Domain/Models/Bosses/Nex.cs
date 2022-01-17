@@ -1,4 +1,5 @@
 using Osrs.Simulator.Domain.Interfaces;
+using Osrs.Simulator.Domain.Models.Uniques;
 using Osrs.Simulator.Domain.Models.Uniques.Nex;
 
 namespace Osrs.Simulator.Domain.Models.Bosses;
@@ -20,4 +21,13 @@ public record Nex : Boss<Nex>
     public override string Name => "Nex";
 
     public override int UniqueDropRateDenominator => 53;
+    public static class UniqueNames
+    {
+        public static UniqueItemName<Nex> NihilHorn { get; } = new("Nihil Horn");
+        public static UniqueItemName<Nex> TorvaPlateBody { get; } = new("Torva Plate Body");
+        public static UniqueItemName<Nex> TorvaPlateLegs { get; } = new("Torva Plate Legs");
+        public static UniqueItemName<Nex> TorvaFullHelmet { get; } = new("Torva Full Helmet");
+        public static UniqueItemName<Nex> AncientHilt { get; } = new("Ancient Hilt");
+        public static UniqueItemName<Nex> ZaryteVambraces { get; } = new("Zaryte Vambraces");
+    }
 }

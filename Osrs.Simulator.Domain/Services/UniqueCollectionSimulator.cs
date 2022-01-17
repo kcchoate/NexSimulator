@@ -14,11 +14,11 @@ public class UniqueCollectionSimulator<T> : IUniqueCollectionSimulator<T> where 
         _killer = killer;
     }
 
-    public SimulationResult<T> GetKillsForUniques(int teamSize, IEnumerable<IBossUnique<T>> desiredUniques)
+    public SimulationResult<T> GetKillsForUniques(int teamSize, IEnumerable<UniqueItemName<T>> desiredUniques)
     {
         var kills = 0;
-        var obtainedUniques = new List<IBossUnique<T>>();
-        var groupedDesiredUniques = desiredUniques.GroupBy(x => x.Name).ToList();
+        var obtainedUniques = new List<UniqueItemName<T>>();
+        var groupedDesiredUniques = desiredUniques.GroupBy(x => x.UniqueName).ToList();
         while (true)
         {
             kills++;
@@ -38,11 +38,10 @@ public class UniqueCollectionSimulator<T> : IUniqueCollectionSimulator<T> where 
     }
 
     private static bool DoesUniqueListSuperSetDesiredUniques(
-        IEnumerable<IBossUnique<T>> obtainedUniques,
-        IEnumerable<IGrouping<string, IBossUnique<T>>> desiredUniques
-    )
+        IEnumerable<UniqueItemName<T>> obtainedUniques,
+        IEnumerable<IGrouping<string, UniqueItemName<T>>> desiredUniques)
     {
-        var obtainedUniqueCounts = obtainedUniques.GroupBy(x => x.Name);
+        var obtainedUniqueCounts = obtainedUniques.GroupBy(x => x.UniqueName);
         return desiredUniques.All(desiredUniqueType =>
         {
             var obtainedUniquesOfTheSameType = obtainedUniqueCounts.FirstOrDefault(u => u.Key == desiredUniqueType.Key);
